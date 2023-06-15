@@ -9,7 +9,7 @@ export const updateTask = (currentTask, dataEntryEl) => {
 
 export const removeTask = (element) => {
   toDoTasks = toDoTasks.filter(
-    (task) => task.index !== parseInt(element.id, 10)
+    (task) => task.index !== parseInt(element.id, 10),
   );
   let index = 1;
   for (let i = 0; i < toDoTasks.length; i += 1) {
@@ -39,9 +39,7 @@ export const RenderToDoList = () => {
     dataEntryEl.type = 'text';
     dataEntryEl.value = task.description;
     dataEntryEl.classList.add('description-field');
-    dataEntryEl.addEventListener('keydown', () =>
-      updateTask(task, dataEntryEl)
-    );
+    dataEntryEl.addEventListener('keydown', () => updateTask(task, dataEntryEl));
     dataWrapperEl.innerHTML += checkboxEl;
     dataWrapperEl.appendChild(dataEntryEl);
     listItemEl.appendChild(dataWrapperEl);
@@ -76,7 +74,6 @@ export const addTask = () => {
   if (!toDoTasks) {
     localStorage.setItem('tasks', JSON.stringify([]));
     toDoTasks = [];
-    return;
   }
   const taskInput = document.querySelector('#task-adder');
   taskInput.addEventListener('keypress', (event) => {
