@@ -22,6 +22,7 @@ export const removeTask = (element) => {
 export const RenderToDoList = () => {
   if (!toDoTasks) {
     localStorage.setItem('tasks', JSON.stringify([]));
+    toDoTasks = [];
     return;
   }
   todoListEl.innerHTML = '';
@@ -72,6 +73,11 @@ export const RenderToDoList = () => {
 };
 
 export const addTask = () => {
+  if (!toDoTasks) {
+    localStorage.setItem('tasks', JSON.stringify([]));
+    toDoTasks = [];
+    return;
+  }
   const taskInput = document.querySelector('#task-adder');
   taskInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
