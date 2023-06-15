@@ -6,7 +6,7 @@ const toDoTasks = [
   },
   {
     description: 'task 2',
-    completed: false,
+    completed: true,
     index: 2,
   },
   {
