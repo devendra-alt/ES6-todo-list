@@ -1,3 +1,5 @@
+import { statusUpdate } from './taskStatus.js';
+
 const todoListEl = document.querySelector('#todo-list');
 let toDoTasks = JSON.parse(localStorage.getItem('tasks'));
 
@@ -25,6 +27,7 @@ export const RenderToDoList = () => {
     toDoTasks = [];
     return;
   }
+
   todoListEl.innerHTML = '';
   toDoTasks.forEach((task) => {
     const listItemEl = document.createElement('li');
@@ -33,11 +36,12 @@ export const RenderToDoList = () => {
     const dataWrapperEl = document.createElement('div');
     const completedString = task.completed ? 'checked' : '';
     const checkboxEl = `
-      <input type="checkbox" ${completedString} >
+      <input type="checkbox" class="checkbox-el" ${completedString} >
     `;
     const dataEntryEl = document.createElement('input');
     dataEntryEl.type = 'text';
     dataEntryEl.value = task.description;
+    dataEntryEl.id = `task-description-${task.index}`;
     dataEntryEl.classList.add('description-field');
     dataEntryEl.addEventListener('keydown', () => updateTask(task, dataEntryEl));
     dataWrapperEl.innerHTML += checkboxEl;
@@ -67,6 +71,7 @@ export const RenderToDoList = () => {
     menuDivEl.innerHTML += menuIcon;
     listItemEl.appendChild(menuDivEl);
     todoListEl.appendChild(listItemEl);
+    statusUpdate();
   });
 };
 

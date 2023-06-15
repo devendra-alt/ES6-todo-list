@@ -1,8 +1,7 @@
 import './style.css';
-
+import { clearAllBtn } from './taskStatus.js';
 import { addTask, RenderToDoList } from './tasks.js';
 
-window.addEventListener('load', () => {
-  addTask();
-  RenderToDoList();
-});
+addTask();
+RenderToDoList();
+clearAllBtn();
