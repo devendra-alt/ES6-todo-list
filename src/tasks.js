@@ -1,7 +1,29 @@
-export let toDoTasks = JSON.parse(localStorage.getItem('tasks'));
 const todoListEl = document.querySelector('#todo-list');
+let toDoTasks = JSON.parse(localStorage.getItem('tasks'));
+
+export const updateTask = (currentTask, dataEntryEl) => {
+  const index = toDoTasks.findIndex((task) => task.index === currentTask.index);
+  toDoTasks[index].description = dataEntryEl.value;
+  localStorage.setItem('tasks', JSON.stringify(toDoTasks));
+};
+
+export const removeTask = (element) => {
+  toDoTasks = toDoTasks.filter(
+    (task) => task.index !== parseInt(element.id, 10),
+  );
+  let index = 1;
+  for (let i = 0; i < toDoTasks.length; i += 1) {
+    toDoTasks[i].index = index;
+    index += 1;
+  }
+  localStorage.setItem('tasks', JSON.stringify(toDoTasks));
+};
 
 export const RenderToDoList = () => {
+  if (!toDoTasks) {
+    localStorage.setItem('tasks', JSON.stringify([]));
+    return;
+  }
   todoListEl.innerHTML = '';
   toDoTasks.forEach((task) => {
     const listItemEl = document.createElement('li');
@@ -16,9 +38,7 @@ export const RenderToDoList = () => {
     dataEntryEl.type = 'text';
     dataEntryEl.value = task.description;
     dataEntryEl.classList.add('description-field');
-    dataEntryEl.addEventListener('keydown', () =>
-      updateTask(task, dataEntryEl)
-    );
+    dataEntryEl.addEventListener('keydown', () => updateTask(task, dataEntryEl));
     dataWrapperEl.innerHTML += checkboxEl;
     dataWrapperEl.appendChild(dataEntryEl);
     listItemEl.appendChild(dataWrapperEl);
@@ -65,20 +85,4 @@ export const addTask = () => {
       RenderToDoList();
     }
   });
-};
-
-export const removeTask = (element) => {
-  toDoTasks = toDoTasks.filter((task) => task.index !== parseInt(element.id));
-  let index = 1;
-  for (let i = 0; i < toDoTasks.length; i++) {
-    toDoTasks[i].index = index;
-    index += 1;
-  }
-  localStorage.setItem('tasks', JSON.stringify(toDoTasks));
-};
-
-export const updateTask = (currentTask, dataEntryEl) => {
-  let index = toDoTasks.findIndex((task) => task.index === currentTask.index);
-  toDoTasks[index].description = dataEntryEl.value;
-  localStorage.setItem('tasks', JSON.stringify(toDoTasks));
 };
