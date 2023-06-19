@@ -1,33 +1,33 @@
+import { getTasks, setTasks } from './localstorage.js';
 import { statusUpdate } from './taskStatus.js';
 
 const todoListEl = document.querySelector('#todo-list');
-let toDoTasks = JSON.parse(localStorage.getItem('tasks'));
+let toDoTasks = getTasks();
 
 export const updateTask = (currentTask, dataEntryEl) => {
   const index = toDoTasks.findIndex((task) => task.index === currentTask.index);
   toDoTasks[index].description = dataEntryEl.value;
-  localStorage.setItem('tasks', JSON.stringify(toDoTasks));
+  setTasks(toDoTasks);
 };
 
 export const removeTask = (element) => {
   toDoTasks = toDoTasks.filter(
-    (task) => task.index !== parseInt(element.id, 10),
+    (task) => task.index !== parseInt(element.id, 10)
   );
   let index = 1;
   for (let i = 0; i < toDoTasks.length; i += 1) {
     toDoTasks[i].index = index;
     index += 1;
   }
-  localStorage.setItem('tasks', JSON.stringify(toDoTasks));
+  setTasks(toDoTasks);
 };
 
 export const RenderToDoList = () => {
   if (!toDoTasks) {
-    localStorage.setItem('tasks', JSON.stringify([]));
+    setTasks([]);
     toDoTasks = [];
     return;
   }
-
   todoListEl.innerHTML = '';
   toDoTasks.forEach((task) => {
     const listItemEl = document.createElement('li');
@@ -43,7 +43,9 @@ export const RenderToDoList = () => {
     dataEntryEl.value = task.description;
     dataEntryEl.id = `task-description-${task.index}`;
     dataEntryEl.classList.add('description-field');
-    dataEntryEl.addEventListener('keydown', () => updateTask(task, dataEntryEl));
+    dataEntryEl.addEventListener('keydown', () =>
+      updateTask(task, dataEntryEl)
+    );
     dataWrapperEl.innerHTML += checkboxEl;
     dataWrapperEl.appendChild(dataEntryEl);
     listItemEl.appendChild(dataWrapperEl);
@@ -77,7 +79,7 @@ export const RenderToDoList = () => {
 
 export const addTask = () => {
   if (!toDoTasks) {
-    localStorage.setItem('tasks', JSON.stringify([]));
+    setTasks([]);
     toDoTasks = [];
   }
   const taskInput = document.querySelector('#task-adder');
