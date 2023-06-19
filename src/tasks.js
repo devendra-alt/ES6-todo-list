@@ -11,9 +11,8 @@ export const updateTask = (currentTask, dataEntryEl) => {
 };
 
 export const removeTask = (element) => {
-  toDoTasks = toDoTasks.filter(
-    (task) => task.index !== parseInt(element.id, 10)
-  );
+  const intValue = parseInt(element.id, 10);
+  toDoTasks = toDoTasks.filter((task) => task.index !== intValue);
   let index = 1;
   for (let i = 0; i < toDoTasks.length; i += 1) {
     toDoTasks[i].index = index;
@@ -43,9 +42,9 @@ export const RenderToDoList = () => {
     dataEntryEl.value = task.description;
     dataEntryEl.id = `task-description-${task.index}`;
     dataEntryEl.classList.add('description-field');
-    dataEntryEl.addEventListener('keydown', () =>
-      updateTask(task, dataEntryEl)
-    );
+    dataEntryEl.addEventListener('keydown', () => {
+      updateTask(task, dataEntryEl);
+    });
     dataWrapperEl.innerHTML += checkboxEl;
     dataWrapperEl.appendChild(dataEntryEl);
     listItemEl.appendChild(dataWrapperEl);
